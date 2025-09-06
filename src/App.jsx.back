@@ -1,0 +1,113 @@
+import { useState, useEffect, useRef } from "react";
+import { motion } from "framer-motion";
+
+export default function Portfolio() {
+  const [command, setCommand] = useState("");
+  const [output, setOutput] = useState([]);
+  const terminalEndRef = useRef(null);
+
+  useEffect(() => {
+    document.documentElement.classList.add("dark");
+    setOutput([
+      {
+        cmd: "",
+        res: `<span class="text-yellow-400">Welcome to Avinash's Terminal Portfolio!</span><br/>
+              <span class="text-yellow-400">Type "help" for commands.</span>`
+      }
+    ]);
+  }, []);
+
+  const commands = {
+    help: `<span class="text-cyan-400">Available commands:</span> about, experience, projects, skills, contact, cv, whoami, fastfetch, date, clear`,
+    about: `I'm Avinash Sharma, a cybersecurity enthusiast with hands-on experience in penetration testing, malware analysis, and CTF development. Lead of EcryptEdge & RCS CTF, active HackTheBox player (top 1,000).`,
+    experience: `Hack The Box (CTF Player) | CTF Administration & Development`,
+    projects: `- PyVTFile (VirusTotal API)<br/>
+- QwertyCapture-lite (Keylogger PoC)<br/>
+- DISdomain (DNS enumeration tool)`,
+    skills: `Linux, Networking, Python, C/C++, Bash, PowerShell, JavaScript, Nmap, Burp Suite, Ghidra, IDA, React, Docker, KVM/QEMU`,
+    contact: `Email: avinasharma.2412@gmail.com<br/>
+GitHub: github.com/hail0hydra<br/>
+LinkedIn: linkedin.com/in/avinash-sharma-me`,
+    cv: `<a href="/Avinash-Sharma-Resume.pdf" target="_blank" rel="noopener noreferrer" class="underline text-blue-400">Download CV</a>`,
+    whoami: `<span class="text-cyan-300 font-bold">avinash@portfolio</span>`,
+    fastfetch: `<span class="text-cyan-300 font-bold">Avinash Sharma | Cybersecurity Enthusiast | HackTheBox Top 1000</span><br/>
+OS: Arch Linux | Shell: zsh | CPU: Intel i7 | RAM: 16GB`,
+    date: `<span class="text-green-300">${new Date().toString()}</span>`,
+    clear: () => { setOutput([]); return ""; }
+  };
+
+  const handleCommand = (e) => {
+    e.preventDefault();
+    if (!command.trim()) return;
+
+    const cmd = command.toLowerCase();
+    let response;
+
+    if (cmd === "clear") {
+      response = commands.clear();
+    } else {
+      response = commands[cmd] || `<span class="text-red-500">Command not found: ${command}</span>`;
+    }
+
+    if (response !== "") {
+      setOutput([...output, { cmd: command, res: response }]);
+    }
+
+    setCommand("");
+  };
+
+  useEffect(() => {
+    terminalEndRef.current?.scrollIntoView({ behavior: "smooth" });
+  }, [output]);
+
+  return (
+    <div className="flex flex-col h-screen w-screen bg-black text-green-400 font-mono p-4" style={{ fontFamily: "'Fira Code', monospace" }}>
+      <div className="flex-1 overflow-hidden">
+        <div className="flex flex-col h-full">
+          <div className="flex-1 overflow-y-auto space-y-2">
+            {output.map((line, index) => (
+              <div key={index}>
+                {line.cmd && (
+                  <p>
+                    <span className="text-purple-400">$</span>{" "}
+                    <span className="text-white font-semibold">{line.cmd}</span>
+                  </p>
+                )}
+                <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
+                  <div dangerouslySetInnerHTML={{ __html: line.res.replace(/\n/g, "<br/>") }} />
+                </motion.div>
+              </div>
+            ))}
+            <div ref={terminalEndRef} />
+          </div>
+
+          <form onSubmit={handleCommand} className="flex mt-2 items-center">
+            <span className="mr-2 text-purple-400">$</span>
+            <input
+              type="text"
+              value={command}
+              onChange={(e) => setCommand(e.target.value)}
+              className="flex-grow bg-black text-white outline-none border-none caret-green-400"
+              autoFocus
+              style={{ fontFamily: "'Fira Code', monospace" }}
+            />
+            <span className="ml-1 w-1 h-5 bg-green-400 animate-blink" />
+          </form>
+        </div>
+      </div>
+
+      <style>
+        {`
+          @keyframes blink {
+            0%, 50%, 100% { opacity: 1; }
+            25%, 75% { opacity: 0; }
+          }
+          .animate-blink {
+            animation: blink 1s step-start infinite;
+          }
+        `}
+      </style>
+    </div>
+  );
+}
+
