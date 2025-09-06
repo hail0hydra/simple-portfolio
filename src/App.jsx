@@ -14,7 +14,7 @@ export default function Portfolio() {
             {
                 cmd: "",
                 res: [
-                    "<span class='text-green-400'>Welcome to Avinash's Hacker Terminal Portfolio!</span>",
+                    "<span class='text-green-400'>Welcome to Avinash's Terminal Portfolio!</span>",
                     "<span class='text-green-400'>Type 'help' for commands.</span>"
                 ]
             }
@@ -43,9 +43,7 @@ export default function Portfolio() {
             "<span class='text-cyan-400'>GitHub: github.com/hail0hydra</span>",
             "<span class='text-cyan-400'>LinkedIn: linkedin.com/in/avinash-sharma-me</span>"
         ],
-        cv: [
-            '<a href="./Avinash-Sharma-Resume.pdf" target="_blank" rel="noopener noreferrer" class="underline text-green-400 hover:text-cyan-400">Download CV</a>'
-        ],
+        cv: ['<a href="./Avinash-Sharma-Resume.pdf" target="_blank" rel="noopener noreferrer" class="underline text-green-400 hover:text-cyan-400">Download CV</a>'],
         whoami: ["<span class='text-green-400 font-bold'>avinash@portfolio</span>"],
         fastfetch: [
             "<span class='text-green-400 font-bold'>Avinash Sharma | Cybersecurity Enthusiast | HackTheBox Top 1000</span>",
